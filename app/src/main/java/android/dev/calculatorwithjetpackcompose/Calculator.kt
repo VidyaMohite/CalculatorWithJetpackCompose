@@ -1,5 +1,6 @@
 package android.dev.calculatorwithjetpackcompose
 
+import android.dev.calculatorwithjetpackcompose.viewmodel.CalculatorViewModel
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -34,33 +36,51 @@ val listOfButtons = listOf(
 )
 
 @Composable
-fun Calculator(){
+fun Calculator(viewModel: CalculatorViewModel){
   Box(modifier = Modifier
-      .fillMaxSize(),
+      .fillMaxSize()
+      .padding(top=50.dp),
       contentAlignment = Alignment.Center)
   {
       Column(
           horizontalAlignment = Alignment.End,
           modifier = Modifier
               .fillMaxSize()
+              .align(alignment = Alignment.TopCenter)
       ){
           Text(text = "123",
               style = TextStyle(
                   fontSize = 20.sp,
-                  textAlign = TextAlign.End
+                  textAlign = TextAlign.End,
+                  fontWeight = FontWeight.Bold
               ),
               maxLines = 3,
               overflow = TextOverflow.Ellipsis,
               modifier = Modifier.padding(top = 70.dp)
           )
 
+          Text(text = "0",
+              style = TextStyle(
+                  fontSize = 20.sp,
+                  textAlign = TextAlign.End,
+                  fontWeight = FontWeight.Bold
+              ),
+              maxLines = 3,
+              overflow = TextOverflow.Ellipsis,
+              modifier = Modifier.padding(top = 20.dp)
+          )
+
           Spacer(modifier = Modifier.height(20.dp))
 
               LazyVerticalGrid(
                   columns = GridCells.Fixed(4),
+                  modifier = Modifier
+                      .padding(top=50.dp)
               ) {
                   items(listOfButtons) {
-                      CalciButton(btnTitle = it)
+                      CalciButton(btnTitle = it, buttonClick= {
+                          viewModel.onClickButton(it)
+                      })
                   }
               }
       }
@@ -77,7 +97,7 @@ fun setButtonColor(btnTitle: String):Color{
 }
 
 @Composable
-fun CalciButton(btnTitle :String){
+fun CalciButton(btnTitle :String,buttonClick:()-> Unit){
     Button(
         modifier = Modifier
             .padding(10.dp)
@@ -89,8 +109,7 @@ fun CalciButton(btnTitle :String){
             disabledContainerColor = Color.LightGray,
             disabledContentColor = Color.Black
         ),
-        onClick = {
-        }
+        onClick = buttonClick
     ) {
         Text(text = btnTitle)
     }

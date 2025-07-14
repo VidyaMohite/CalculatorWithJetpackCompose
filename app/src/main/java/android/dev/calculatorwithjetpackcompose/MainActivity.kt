@@ -12,14 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import android.dev.calculatorwithjetpackcompose.ui.theme.CalculatorWithJetpackComposeTheme
+import android.dev.calculatorwithjetpackcompose.viewmodel.CalculatorViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val calculatorViewModel= ViewModelProvider(this)[CalculatorViewModel::class.java]
         enableEdgeToEdge()
         setContent {
             CalculatorWithJetpackComposeTheme {
-                    ViewCalculator()
+                   Calculator(calculatorViewModel)
             }
         }
     }
@@ -28,6 +31,5 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun ViewCalculator(){
-   // AppBar()
-    Calculator()
+
 }
